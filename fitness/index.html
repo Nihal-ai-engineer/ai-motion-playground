@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#102923" />
+    <title>Formlab — Move with intention</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <a class="brand" href="#home"
+        ><span class="brand-mark">f<span>↗</span></span
+        >formlab<span class="brand-dot">.</span></a
+      >
+      <div class="workspace-label">YOUR TRAINING SPACE</div>
+      <nav aria-label="Main navigation">
+        <a href="#home" data-page="home"><span>◫</span> Overview</a
+        ><a href="#coach" data-page="coach"
+          ><span>◎</span> Movement studio <small>LIVE</small></a
+        ><a href="#library" data-page="library"
+          ><span>▦</span> Exercise library</a
+        ><a href="#strength" data-page="strength"
+          ><span>↗</span> Powerlifting</a
+        ><a href="#progress" data-page="progress"
+          ><span>▥</span> Your progress</a
+        >
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="privacy-dot"></div>
+        <b>On your device</b>
+        <p>Camera frames stay here.<br />Your training, your space.</p>
+        <button class="profile-link" id="edit-profile">
+          <span class="avatar">Y</span
+          ><span id="sidebar-name">Your profile</span><span>⚙</span>
+        </button>
+      </div>
+    </aside>
+    <div class="app">
+      <header class="topbar">
+        <span id="breadcrumb">Your training / Overview</span>
+        <div>
+          <span class="local-badge">● LOCAL FIRST</span
+          ><button
+            class="icon-button"
+            id="top-profile"
+            aria-label="Training profile"
+          >
+            ⚙</button
+          ><button class="button small secondary" id="quick-log">
+            ＋ Log a set
+          </button>
+        </div>
+      </header>
+      <main id="main"></main>
+      <footer>
+        Built around your movement. <span>Formlab · Early preview</span>
+      </footer>
+    </div>
+    <dialog id="log-dialog">
+      <form id="log-form">
+        <div class="dialog-head">
+          <div>
+            <p class="eyebrow">MAKE IT COUNT</p>
+            <h2>Log your set</h2>
+          </div>
+          <button
+            type="button"
+            class="icon-button close-dialog"
+            aria-label="Close"
+          >
+            ×
+          </button>
+        </div>
+        <label
+          >Exercise<select name="exercise" id="log-exercise"></select
+        ></label>
+        <div class="form-grid">
+          <label
+            ><span id="amount-label">Repetitions</span
+            ><input
+              name="amount"
+              type="number"
+              min="1"
+              max="10000"
+              value="5"
+              required /></label
+          ><label
+            >External load · kg<input
+              name="load"
+              type="number"
+              min="0"
+              max="1000"
+              step="0.25"
+              value="0"
+              required
+          /></label>
+        </div>
+        <label
+          >Effort · 1 easy, 10 maximum<select name="effort">
+            <option value="5">5 — Moderate</option>
+            <option value="6">6 — Comfortable</option>
+            <option value="7" selected>7 — Challenging</option>
+            <option value="8">8 — Hard</option>
+            <option value="9">9 — Very hard</option>
+            <option value="10">10 — Maximum</option>
+            <option value="1">1 — Very easy</option>
+            <option value="2">2 — Easy</option>
+            <option value="3">3 — Light</option>
+            <option value="4">4 — Fairly light</option>
+          </select></label
+        ><label
+          >Notes<textarea
+            name="notes"
+            rows="3"
+            maxlength="1000"
+            placeholder="Variation, assistance, how it felt…"
+          ></textarea>
+        </label>
+        <p id="log-origin" class="muted"></p>
+        <p id="log-error" role="alert" class="error"></p>
+        <button class="button primary full">Save set</button>
+      </form>
+    </dialog>
+    <dialog id="profile-dialog">
+      <form id="profile-form">
+        <div class="dialog-head">
+          <div>
+            <p class="eyebrow">YOUR STARTING POINT</p>
+            <h2>Training profile</h2>
+          </div>
+          <button
+            type="button"
+            class="icon-button close-dialog"
+            aria-label="Close"
+          >
+            ×
+          </button>
+        </div>
+        <label
+          >First name<input name="name" maxlength="30" placeholder="Your name"
+        /></label>
+        <div class="form-grid">
+          <label
+            >Bodyweight · kg (optional)<input
+              name="bodyweight"
+              type="number"
+              min="20"
+              max="400"
+              step="0.1" /></label
+          ><label
+            >Experience<select name="experience">
+              <option value="new">Getting started</option>
+              <option value="regular">Training regularly</option>
+              <option value="experienced">Experienced</option>
+            </select></label
+          >
+        </div>
+        <label
+          >Primary focus<select name="goal">
+            <option>Move better</option>
+            <option>Build strength</option>
+            <option>Calisthenics skills</option>
+          </select></label
+        >
+        <p class="muted">
+          Your profile and sets are stored in this browser. Export your history
+          to keep a backup.
+        </p>
+        <p id="profile-error" role="alert" class="error"></p>
+        <button class="button primary full">Save profile</button>
+      </form>
+    </dialog>
+    <dialog id="export-dialog">
+      <div class="dialog-head">
+        <div>
+          <p class="eyebrow">KEEP YOUR PROGRESS</p>
+          <h2>Export your history</h2>
+        </div>
+        <button
+          type="button"
+          class="icon-button close-dialog"
+          aria-label="Close"
+        >
+          ×
+        </button>
+      </div>
+      <p class="muted">
+        Download a JSON backup. If your browser blocks downloads, copy the
+        backup text into a .json file. Import restores workout sets and their
+        measurements; profile settings are included for reference.
+      </p>
+      <label
+        >Backup text<textarea
+          id="backup-text"
+          rows="9"
+          readonly
+        ></textarea></label
+      ><a class="button primary full" id="download-backup"
+        >Download JSON backup ↓</a
+      >
+    </dialog>
+    <div id="toast" role="status"></div>
+    <script type="module" src="app.mjs"></script>
+  </body>
+</html>

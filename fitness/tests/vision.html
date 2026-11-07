@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" /><title>Formlab model check</title
+  ><style>
+    body {
+      font: 16px system-ui;
+      padding: 30px;
+      color: #193b2f;
+    }
+    img {
+      width: 420px;
+    }
+    pre {
+      white-space: pre-wrap;
+    }
+  </style>
+  <h1>Pose model integration check</h1>
+  <p>
+    Official MediaPipe example image. This checks model loading and pose
+    inference, not exercise-coaching accuracy.
+  </p>
+  <img
+    id="fixture"
+    src="pose.jpg"
+    alt="Official pose estimation test fixture"
+  />
+  <pre id="result">Loading local model…</pre>
+  <script type="module">
+    import {
+      FilesetResolver,
+      PoseLandmarker,
+    } from "../vendor/vision_bundle.mjs";
+    try {
+      const files = await FilesetResolver.forVisionTasks("../vendor/wasm");
+      const model = await PoseLandmarker.createFromOptions(files, {
+        baseOptions: {
+          modelAssetPath: "../vendor/pose_landmarker_lite.task",
+          delegate: "CPU",
+        },
+        runningMode: "IMAGE",
+        numPoses: 1,
+      });
+      const image = document.querySelector("img");
+      await image.decode();
+      const result = model.detect(image);
+      if (result.landmarks?.[0]?.length !== 33)
+        throw Error("Expected 33 landmarks from fixture.");
+      document.querySelector("#result").textContent =
+        "PASS — Local model loaded. Detected 33 image landmarks and " +
+        result.worldLandmarks[0].length +
+        " world landmarks.";
+      model.close();
+    } catch (error) {
+      document.querySelector("#result").textContent = "FAIL — " + error.message;
+    }
+  </script>
+</html>
